@@ -45,9 +45,9 @@ class Calculator {
         } else if (n == 1) {
             return 1;
         }
-        int num1 =0;
-        int num2 =1;
-        for(int tracker = 2; tracker < n; tracker++) {
+        int num1 = 0;
+        int num2 = 1;
+        for(int tracker = 2; tracker <= n; tracker++) {
             int temp = num1+num2;
             num1 = num2;
             num2 = temp;
