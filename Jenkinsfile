@@ -1,5 +1,11 @@
 pipeline {
     agent any
+    environment {
+        registry = "jasuni/jenkins_calculator_app"
+        registryCredential = 'dockerhub'
+        dockerImage=''
+
+    }
     tools {
         maven 'apache maven 3.6.3'
         jdk 'JDK 8'
@@ -42,5 +48,37 @@ pipeline {
             }
         }
 
+        stage ('Building Image') {
+            steps {
+                script {
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                }
+            }
+        }
+
+        stage ('Deploy Image') {
+            steps {
+                script {
+                    docker.withRegistry('', registryCredential) {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+
+        stage ('Remove Unused Docker Image') {
+            steps {
+                sh "docker rmi $registry:$BUILD_NUMBER"
+            }
+        }
+
+    }
+
+    post {
+        failure {
+            mail to: 'jasuniprime@gmail.com',
+                subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
+                body: "Something is wrong with ${env.BUILD_URL}"
+        }
     }
 }
