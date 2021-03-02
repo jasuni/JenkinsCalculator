@@ -7,6 +7,9 @@ public class Main {
         Calculator calc = new Calculator();
         while (scan.hasNext()) {
             String function = scan.next();
+            if (function.equalsIgnoreCase("exit")) {
+                break;
+            }
             int num1 = scan.nextInt();
             String result;
             if(function.equalsIgnoreCase("add")) {
