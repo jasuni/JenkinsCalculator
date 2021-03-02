@@ -58,7 +58,6 @@ class Calculator {
     String intToBinaryNumber(int n) {
         if(n == 0) {
             return "0";
-            break;
         }
         StringBuilder result = new StringBuilder();
         while(n > 0) {
